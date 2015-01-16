@@ -8,6 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "Account.h"
+
 #define kMailIndexToInsertInMenu 4
 
 #define kMaxMailsToFetch 1000
@@ -33,7 +35,14 @@ typedef enum {
     NSMenuItem *aboutMenuItem;
     NSMenuItem *exitMenuItem;
 
-    NSMutableArray *mailMenuItems;
+    NSMutableArray *accountsMenuItems;
+
+    NSMenu *currentMessagesMenu;
+
+    NSMutableDictionary *messages; // account desc => NSArray of messages (MCOIMAPMessage)
+
+    NSMutableArray *accounts;
+
 
     BOOL unreadCount;
 

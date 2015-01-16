@@ -19,6 +19,13 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
 
+    accounts = [NSMutableArray array];
+
+    Account *a = [[Account alloc] init];
+    a.desc = @"CK Tech";
+    a.username = @"yang.zhang@ck-telecom.com";
+    a.password = @"CK654321";
+
     [self createMenu];
 }
 
