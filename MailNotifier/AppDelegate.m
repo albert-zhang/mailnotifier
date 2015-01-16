@@ -72,39 +72,29 @@
     exitMenuItem.keyEquivalent = @"Q";
     exitMenuItem.keyEquivalentModifierMask = 0;
     [statusBarMenu addItem:exitMenuItem];
-    
-    
+
+
+    checkingStatus = CheckingStatusIdle;
+
+    [self startCheckingRepeatedly];
+
     [self checkNow];
 }
 
-- (void)onCheckNow:(id)sender{
-    [self checkNow];
-}
-
-
-- (void)onPerferences:(id)sender{
-
-}
-
-- (void)onAbout:(id)sender{
-
-}
-
-- (void)onExit:(id)sender{
-    [[NSApplication sharedApplication] terminate:nil];
-}
+#pragma mark -
 
 - (void)setCheckingStatus:(CheckingStatus)st{
+    checkingStatus = st;
     NSString *str = nil;
     switch (st) {
         case CheckingStatusError:
             str = @"Error occured";
             break;
-        case CheckingStatusLookingUp:
-            str = @"Looking Up ....";
+        case CheckingStatusChecking:
+            str = @"Checking ....";
             break;
         case CheckingStatusWait4Retry:
-            str = @"Will try again soon";
+            str = @"Error, will try again soon";
             break;
         case CheckingStatusIdle:
             if(unreadCount > 0){
@@ -119,9 +109,16 @@
     appStatusMenuItem.title = str;
 }
 
+#pragma mark -
 
 - (void)checkNow{
-    [self setCheckingStatus:CheckingStatusLookingUp];
+    if(checkingStatus == CheckingStatusChecking){
+        return;
+    }
+
+    [self cancelWait4Retry];
+
+    [self setCheckingStatus:CheckingStatusChecking];
 
     MCOIMAPSession *session = [[MCOIMAPSession alloc] init];
     [session setHostname:@"imap.qiye.163.com"];
@@ -140,6 +137,7 @@
         if(error) {
             NSLog(@"Error downloading message headers:%@", error);
             [self setCheckingStatus:CheckingStatusError];
+            [self wait4retry];
 
         }else{
             unreadCount = 0;
@@ -182,7 +180,68 @@
             [self setCheckingStatus:CheckingStatusIdle];
         }
     }];
+
+    [self startCheckingRepeatedly];
 }
+
+#pragma mark -
+
+- (void)cancelWait4Retry{
+    if(wait4retryTimer){
+        [wait4retryTimer invalidate];
+        wait4retryTimer = nil;
+    }
+}
+
+- (void)wait4retry{
+    [self setCheckingStatus:CheckingStatusWait4Retry];
+
+    [self cancelWait4Retry];
+    wait4retryTimer = [NSTimer timerWithTimeInterval:kWait4RetryDuration target:self selector:@selector(onWait4RetryTimer:) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:wait4retryTimer forMode:NSRunLoopCommonModes];
+}
+
+- (void)onWait4RetryTimer:(NSTimer *)t{
+    [self cancelWait4Retry];
+
+    [self checkNow];
+}
+
+#pragma mark -
+
+- (void)startCheckingRepeatedly{
+    if(repeatCheckTimer){
+        [repeatCheckTimer invalidate];
+    }
+    repeatCheckTimer = [NSTimer timerWithTimeInterval:kCheckingInterval target:self selector:@selector(onRepeatCheckTimer:) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:repeatCheckTimer forMode:NSRunLoopCommonModes];
+}
+
+- (void)onRepeatCheckTimer:(NSTimer *)t{
+    if(checkingStatus == CheckingStatusIdle){
+        [self checkNow];
+    }
+}
+
+#pragma mark -
+
+- (void)onCheckNow:(id)sender{
+    [self checkNow];
+}
+
+
+- (void)onPerferences:(id)sender{
+
+}
+
+- (void)onAbout:(id)sender{
+
+}
+
+- (void)onExit:(id)sender{
+    [[NSApplication sharedApplication] terminate:nil];
+}
+
 
 - (void)onSelectMail:(id)sender{
 

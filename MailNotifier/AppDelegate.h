@@ -12,8 +12,12 @@
 
 #define kMaxMailsToFetch 1000
 
+#define kWait4RetryDuration 5.0
+
+#define kCheckingInterval 15.0
+
 typedef enum {
-    CheckingStatusLookingUp,
+    CheckingStatusChecking,
     CheckingStatusError,
     CheckingStatusWait4Retry,
     CheckingStatusIdle
@@ -32,6 +36,11 @@ typedef enum {
     NSMutableArray *mailMenuItems;
 
     BOOL unreadCount;
+
+    NSTimer *repeatCheckTimer;
+
+    CheckingStatus checkingStatus;
+    NSTimer *wait4retryTimer;
 }
 
 @end
