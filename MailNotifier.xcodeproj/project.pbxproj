@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		274F93C11A69736D00B3573A /* Windows.xib in Resources */ = {isa = PBXBuildFile; fileRef = 274F93C01A69736D00B3573A /* Windows.xib */; };
+		274F94201A69747800B3573A /* Application.xib in Resources */ = {isa = PBXBuildFile; fileRef = 274F941F1A69747800B3573A /* Application.xib */; };
 		8013ABE40CB75FEA9AD0F4CB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 40B36B8AD3D270CD275553C3 /* libPods.a */; };
 		DE15EEBE1A6915C100CD0F3D /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = DE15EEBD1A6915C100CD0F3D /* Account.m */; };
 		DE15EEC11A69163D00CD0F3D /* Server.m in Sources */ = {isa = PBXBuildFile; fileRef = DE15EEC01A69163D00CD0F3D /* Server.m */; };
 		DEB0259E1A678EEE004742A4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB0259D1A678EEE004742A4 /* AppDelegate.m */; };
 		DEB025A01A678EEE004742A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB0259F1A678EEE004742A4 /* main.m */; };
 		DEB025A21A678EEE004742A4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DEB025A11A678EEE004742A4 /* Images.xcassets */; };
-		DEB025A51A678EEE004742A4 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DEB025A31A678EEE004742A4 /* MainMenu.xib */; };
 		DEB025B11A678EEE004742A4 /* MailNotifierTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB025B01A678EEE004742A4 /* MailNotifierTests.m */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +31,8 @@
 /* Begin PBXFileReference section */
 		0C1EDBCA9591B9C7529DBABC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		0D3C5B9A1E88F7A66BC3E0DC /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		274F93C01A69736D00B3573A /* Windows.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Windows.xib; sourceTree = "<group>"; };
+		274F941F1A69747800B3573A /* Application.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Application.xib; sourceTree = "<group>"; };
 		40B36B8AD3D270CD275553C3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE15EEBC1A6915C100CD0F3D /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
 		DE15EEBD1A6915C100CD0F3D /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
@@ -41,7 +44,6 @@
 		DEB0259D1A678EEE004742A4 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		DEB0259F1A678EEE004742A4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		DEB025A11A678EEE004742A4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		DEB025A41A678EEE004742A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		DEB025AA1A678EEE004742A4 /* MailNotifierTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MailNotifierTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEB025AF1A678EEE004742A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DEB025B01A678EEE004742A4 /* MailNotifierTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MailNotifierTests.m; sourceTree = "<group>"; };
@@ -104,7 +106,8 @@
 				DE15EEBF1A69163D00CD0F3D /* Server.h */,
 				DE15EEC01A69163D00CD0F3D /* Server.m */,
 				DEB025A11A678EEE004742A4 /* Images.xcassets */,
-				DEB025A31A678EEE004742A4 /* MainMenu.xib */,
+				274F941F1A69747800B3573A /* Application.xib */,
+				274F93C01A69736D00B3573A /* Windows.xib */,
 				DEB0259A1A678EEE004742A4 /* Supporting Files */,
 			);
 			path = MailNotifier;
@@ -227,8 +230,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				274F94201A69747800B3573A /* Application.xib in Resources */,
 				DEB025A21A678EEE004742A4 /* Images.xcassets in Resources */,
-				DEB025A51A678EEE004742A4 /* MainMenu.xib in Resources */,
+				274F93C11A69736D00B3573A /* Windows.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,17 +307,6 @@
 			targetProxy = DEB025AB1A678EEE004742A4 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		DEB025A31A678EEE004742A4 /* MainMenu.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DEB025A41A678EEE004742A4 /* Base */,
-			);
-			name = MainMenu.xib;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		DEB025B21A678EEE004742A4 /* Debug */ = {

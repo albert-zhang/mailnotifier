@@ -10,7 +10,7 @@
 
 #import "Account.h"
 
-#define kMailIndexToInsertInMenu 4
+#define kIndexToInsertAccountMenuItem 4
 
 #define kMaxMailsToFetch 1000
 
@@ -35,14 +35,14 @@ typedef enum {
     NSMenuItem *aboutMenuItem;
     NSMenuItem *exitMenuItem;
 
-    NSMutableArray *accountsMenuItems;
+//    NSMutableArray *accountsMenuItems;
 
-    NSMenu *currentMessagesMenu;
+//    NSMenu *currentMessagesMenu;
 
-    NSMutableDictionary *messages; // account desc => NSArray of messages (MCOIMAPMessage)
+    NSMutableArray *messages; // account index => NSArray of messages (MCOIMAPMessage)
 
     NSMutableArray *accounts;
-
+	NSMutableArray *accountSubmenus;
 
     BOOL unreadCount;
 

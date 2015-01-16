@@ -9,24 +9,56 @@
 #import "AppDelegate.h"
 #import "MailCore.h"
 
-@interface AppDelegate ()
-
-@property (weak) IBOutlet NSWindow *window;
-@end
 
 @implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
 
-    accounts = [NSMutableArray array];
-
-    Account *a = [[Account alloc] init];
-    a.desc = @"CK Tech";
-    a.username = @"yang.zhang@ck-telecom.com";
-    a.password = @"CK654321";
+	[self fetchAccounts];
+	[self createMessageContainer];
 
     [self createMenu];
+}
+
+
+- (void)fetchAccounts{
+	accounts = [NSMutableArray array];
+	
+	Account *a = [[Account alloc] init];
+	a.desc = @"CK Tech";
+	a.username = @"yang.zhang@ck-telecom.com";
+	a.password = @"CK654321";
+	a.server = [Server serverWithType:ServerTypeNeteasyEnterprise];
+	
+	[accounts addObject:a];
+}
+
+- (int)indexForAccount:(Account *)acc{
+	int index = -1;
+	for(int i=0; i<accounts.count; i++){
+		Account *a = accounts[i];
+		if(a == acc){
+			index = i;
+			break;
+		}
+	}
+	return index;
+}
+
+- (void)createMessageContainer{
+	messages = [NSMutableArray arrayWithCapacity:accounts.count];
+	for(int i=0; i<accounts.count; i++){
+		[messages addObject:[NSMutableArray array]];
+	}
+}
+
+- (NSMutableArray *)messagesContainerForAccount:(Account *)acc{
+	int index = [self indexForAccount:acc];
+	if(index >= 0){
+		return messages[index];
+	}
+	return nil;
 }
 
 
@@ -54,7 +86,7 @@
     [statusBarMenu addItem:checkNowMenuItem];
 
     [statusBarMenu addItem:[NSMenuItem separatorItem]];
-    // place holder for the mails
+    // place holder for the account menu items
     [statusBarMenu addItem:[NSMenuItem separatorItem]];
 
     preferencesMenuItem = [[NSMenuItem alloc] init];
@@ -80,12 +112,38 @@
     exitMenuItem.keyEquivalentModifierMask = 0;
     [statusBarMenu addItem:exitMenuItem];
 
+	[self createMenuItemsForAccounts];
 
     checkingStatus = CheckingStatusIdle;
 
     [self startCheckingRepeatedly];
 
     [self checkNow];
+}
+
+- (void)createMenuItemsForAccounts{
+	accountSubmenus = [NSMutableArray arrayWithCapacity:accounts.count];
+	
+	for(int i=0; i<accounts.count; i++){
+		Account *acc = accounts[i];
+		NSMenuItem *itm = [[NSMenuItem alloc] init];
+		itm.title = acc.desc;
+		
+		NSMenu *subm = [[NSMenu alloc] init];
+		[accountSubmenus addObject:subm];
+		
+		itm.submenu = subm;
+		
+		[statusBarMenu insertItem:itm atIndex:kIndexToInsertAccountMenuItem];
+	}
+}
+
+- (NSMenu *)accountSubmenuForAccount:(Account *)acc{
+	int index = [self indexForAccount:acc];
+	if(index >= 0){
+		return accountSubmenus[index];
+	}
+	return nil;
 }
 
 #pragma mark -
@@ -149,16 +207,18 @@
         }else{
             unreadCount = 0;
 
-            if(mailMenuItems){
-                for(NSMenuItem *itm in mailMenuItems){
-                    [statusBarMenu removeItem:itm];
-                }
-            }
-
-            mailMenuItems = [NSMutableArray array];
+			Account *acc = accounts[0]; // TODO: here /////////////////////////////////////////////////////////////////
+			
+			NSMenu *accSubmenu = [self accountSubmenuForAccount:acc];
+			[accSubmenu removeAllItems];
+			
+			NSMutableArray *msgsContainerForThisAccount = [self messagesContainerForAccount:acc];
+			[msgsContainerForThisAccount removeAllObjects];
 
             for(int i=0; i<fetchedMessages.count; i++){
                 MCOIMAPMessage *msg = fetchedMessages[i];
+				
+				[msgsContainerForThisAccount addObject:msg];
 
                 NSString *subject = msg.header.subject;
                 if(! subject){
@@ -179,9 +239,8 @@
                     itm.attributedTitle = [[NSAttributedString alloc] initWithString:subject attributes:attrs];
                 }
                 [itm setAction:@selector(onSelectMail:)];
-                [statusBarMenu insertItem:itm atIndex:kMailIndexToInsertInMenu];
-
-                [mailMenuItems addObject:itm];
+				
+				[accSubmenu insertItem:itm atIndex:0];
             }
 
             [self setCheckingStatus:CheckingStatusIdle];
