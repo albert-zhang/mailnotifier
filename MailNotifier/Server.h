@@ -13,16 +13,16 @@
 typedef enum {
     ServerTypeOther,
     ServerTypeGmail,
-    ServerTypeOutlook,
-    ServerTypeNeteasyEnterprise
+	ServerTypeOutlook,
+	ServerType163Enterprise,
+	ServerType126
 }ServerType;
 
 @interface Server : NSObject
 
-@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *hostname;
 @property (nonatomic, assign) int port;
 @property (nonatomic, assign) MCOConnectionType connType;
-@property (nonatomic, assign) ServerType type;
 
 + (Server *)serverWithType:(ServerType)tp;
 

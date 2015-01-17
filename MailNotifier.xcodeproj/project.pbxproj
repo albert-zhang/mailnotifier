@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		274F93C11A69736D00B3573A /* Windows.xib in Resources */ = {isa = PBXBuildFile; fileRef = 274F93C01A69736D00B3573A /* Windows.xib */; };
 		274F94201A69747800B3573A /* Application.xib in Resources */ = {isa = PBXBuildFile; fileRef = 274F941F1A69747800B3573A /* Application.xib */; };
+		274F94241A69F46200B3573A /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274F94221A69F46200B3573A /* PreferencesWindowController.m */; };
+		274F94251A69F46200B3573A /* PreferencesWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 274F94231A69F46200B3573A /* PreferencesWindowController.xib */; };
+		274F94281A69F51000B3573A /* SettingsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 274F94271A69F51000B3573A /* SettingsManager.m */; };
 		8013ABE40CB75FEA9AD0F4CB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 40B36B8AD3D270CD275553C3 /* libPods.a */; };
 		DE15EEBE1A6915C100CD0F3D /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = DE15EEBD1A6915C100CD0F3D /* Account.m */; };
 		DE15EEC11A69163D00CD0F3D /* Server.m in Sources */ = {isa = PBXBuildFile; fileRef = DE15EEC01A69163D00CD0F3D /* Server.m */; };
@@ -31,8 +33,12 @@
 /* Begin PBXFileReference section */
 		0C1EDBCA9591B9C7529DBABC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		0D3C5B9A1E88F7A66BC3E0DC /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		274F93C01A69736D00B3573A /* Windows.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Windows.xib; sourceTree = "<group>"; };
 		274F941F1A69747800B3573A /* Application.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Application.xib; sourceTree = "<group>"; };
+		274F94211A69F46200B3573A /* PreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesWindowController.h; sourceTree = "<group>"; };
+		274F94221A69F46200B3573A /* PreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesWindowController.m; sourceTree = "<group>"; };
+		274F94231A69F46200B3573A /* PreferencesWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreferencesWindowController.xib; sourceTree = "<group>"; };
+		274F94261A69F51000B3573A /* SettingsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsManager.h; sourceTree = "<group>"; };
+		274F94271A69F51000B3573A /* SettingsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsManager.m; sourceTree = "<group>"; };
 		40B36B8AD3D270CD275553C3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE15EEBC1A6915C100CD0F3D /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
 		DE15EEBD1A6915C100CD0F3D /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
@@ -99,15 +105,19 @@
 		DEB025991A678EEE004742A4 /* MailNotifier */ = {
 			isa = PBXGroup;
 			children = (
+				DEB025A11A678EEE004742A4 /* Images.xcassets */,
+				274F941F1A69747800B3573A /* Application.xib */,
 				DEB0259C1A678EEE004742A4 /* AppDelegate.h */,
 				DEB0259D1A678EEE004742A4 /* AppDelegate.m */,
 				DE15EEBC1A6915C100CD0F3D /* Account.h */,
 				DE15EEBD1A6915C100CD0F3D /* Account.m */,
 				DE15EEBF1A69163D00CD0F3D /* Server.h */,
 				DE15EEC01A69163D00CD0F3D /* Server.m */,
-				DEB025A11A678EEE004742A4 /* Images.xcassets */,
-				274F941F1A69747800B3573A /* Application.xib */,
-				274F93C01A69736D00B3573A /* Windows.xib */,
+				274F94261A69F51000B3573A /* SettingsManager.h */,
+				274F94271A69F51000B3573A /* SettingsManager.m */,
+				274F94211A69F46200B3573A /* PreferencesWindowController.h */,
+				274F94221A69F46200B3573A /* PreferencesWindowController.m */,
+				274F94231A69F46200B3573A /* PreferencesWindowController.xib */,
 				DEB0259A1A678EEE004742A4 /* Supporting Files */,
 			);
 			path = MailNotifier;
@@ -232,7 +242,7 @@
 			files = (
 				274F94201A69747800B3573A /* Application.xib in Resources */,
 				DEB025A21A678EEE004742A4 /* Images.xcassets in Resources */,
-				274F93C11A69736D00B3573A /* Windows.xib in Resources */,
+				274F94251A69F46200B3573A /* PreferencesWindowController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,7 +295,9 @@
 			files = (
 				DE15EEBE1A6915C100CD0F3D /* Account.m in Sources */,
 				DEB025A01A678EEE004742A4 /* main.m in Sources */,
+				274F94241A69F46200B3573A /* PreferencesWindowController.m in Sources */,
 				DE15EEC11A69163D00CD0F3D /* Server.m in Sources */,
+				274F94281A69F51000B3573A /* SettingsManager.m in Sources */,
 				DEB0259E1A678EEE004742A4 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,13 +8,65 @@
 
 #import "AppDelegate.h"
 #import "MailCore.h"
-
+#import "SettingsManager.h"
 
 @implementation AppDelegate
 
+
+- (void)test{
+	MCOIMAPSession *session = [[MCOIMAPSession alloc] init];
+
+//	[session setHostname:@"imap.qiye.163.com"];
+//	[session setPort:993];
+//	[session setUsername:@"yang.zhang@ck-telecom.com"];
+//	[session setPassword:@"Ck654321"];
+//	[session setConnectionType:MCOConnectionTypeTLS];
+
+//	[session setHostname:@"imap.gmail.com"];
+//	[session setPort:993];
+//	[session setUsername:@"edistein.zhang@gmail.com"];
+//	[session setPassword:@"asdf"];
+//	[session setConnectionType:MCOConnectionTypeTLS];
+
+	[session setHostname:@"imap.126.com"];
+	[session setPort:993];
+	[session setUsername:@"daodaner@126.com"];
+	[session setPassword:@"123654987"];
+	[session setConnectionType:MCOConnectionTypeTLS];
+
+	NSLog(@"started");
+	MCOIMAPFetchFoldersOperation *fetchOperation = [session fetchAllFoldersOperation];
+	[fetchOperation start:^(NSError *error, NSArray *folders) {
+		if(error){
+			NSLog(@"%@", error);
+		}else{
+			NSLog(@"folders: ");
+		}
+		for(MCOIMAPFolder *f in folders){
+			NSLog(@"folder: [%@], %ld", f.path, (f.flags & MCOIMAPFolderFlagInbox));
+		}
+	}];
+
+
+//	MCOIMAPMessagesRequestKind requestKind = MCOIMAPMessagesRequestKindHeaders | MCOIMAPMessagesRequestKindFlags;
+//	MCOIndexSet *uids = [MCOIndexSet indexSetWithRange:MCORangeMake(0, kMaxMailsToFetch)];
+//
+//	MCOIMAPFetchMessagesOperation *fetchOperation = [session fetchMessagesOperationWithFolder:@"abcd" requestKind:requestKind uids:uids];
+//	[fetchOperation start:^(NSError *error, NSArray *fetchedMessages, MCOIndexSet *vanishedMessages){
+//		if(error){
+//			NSLog(@"%@", error);
+//		}else{
+//			NSLog(@"%lu", fetchedMessages.count);
+//		}
+//	}];
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
-
+	
+//	[self test];
+//	return;
+	
 	[self fetchAccounts];
 	[self createMessageContainer];
 
@@ -23,42 +75,25 @@
 
 
 - (void)fetchAccounts{
-	accounts = [NSMutableArray array];
+	accounts = [NSMutableDictionary dictionary];
 	
-	Account *a = [[Account alloc] init];
-	a.desc = @"CK Tech";
-	a.username = @"yang.zhang@ck-telecom.com";
-	a.password = @"CK654321";
-	a.server = [Server serverWithType:ServerTypeNeteasyEnterprise];
-	
-	[accounts addObject:a];
+	NSArray *accs = [SettingsManager sharedManager].accounts;
+	for(Account *acc in accs){
+		[accounts setObject:acc forKey:acc.UID];
+	}
 }
 
-- (int)indexForAccount:(Account *)acc{
-	int index = -1;
-	for(int i=0; i<accounts.count; i++){
-		Account *a = accounts[i];
-		if(a == acc){
-			index = i;
-			break;
-		}
-	}
-	return index;
-}
 
 - (void)createMessageContainer{
-	messages = [NSMutableArray arrayWithCapacity:accounts.count];
-	for(int i=0; i<accounts.count; i++){
-		[messages addObject:[NSMutableArray array]];
+	messages = [NSMutableDictionary dictionaryWithCapacity:accounts.count];
+	for(NSString *UID in accounts){
+		Account *acc = accounts[UID];
+		[messages setObject:[NSMutableArray array] forKey:acc.UID];
 	}
 }
 
 - (NSMutableArray *)messagesContainerForAccount:(Account *)acc{
-	int index = [self indexForAccount:acc];
-	if(index >= 0){
-		return messages[index];
-	}
-	return nil;
+	return [messages objectForKey:acc.UID];
 }
 
 
@@ -122,15 +157,15 @@
 }
 
 - (void)createMenuItemsForAccounts{
-	accountSubmenus = [NSMutableArray arrayWithCapacity:accounts.count];
+	accountSubmenus = [NSMutableDictionary dictionaryWithCapacity:accounts.count];
 	
-	for(int i=0; i<accounts.count; i++){
-		Account *acc = accounts[i];
+	for(NSString *UID in accounts){
+		Account *acc = accounts[UID];
 		NSMenuItem *itm = [[NSMenuItem alloc] init];
 		itm.title = acc.desc;
 		
 		NSMenu *subm = [[NSMenu alloc] init];
-		[accountSubmenus addObject:subm];
+		[accountSubmenus setObject:subm forKey:acc.UID];
 		
 		itm.submenu = subm;
 		
@@ -139,11 +174,7 @@
 }
 
 - (NSMenu *)accountSubmenuForAccount:(Account *)acc{
-	int index = [self indexForAccount:acc];
-	if(index >= 0){
-		return accountSubmenus[index];
-	}
-	return nil;
+	return [accountSubmenus objectForKey:acc.UID];
 }
 
 #pragma mark -
@@ -176,6 +207,32 @@
 
 #pragma mark -
 
+
+- (void)checkForAccount:(Account *)acc
+			 onComplete:(void (^)(Account *checkedAccount, NSError *error, NSArray *fetchedMessages))onComplete
+{
+	MCOIMAPSession *session = [[MCOIMAPSession alloc] init];
+	[session setHostname:acc.server.hostname];
+	[session setPort:acc.server.port];
+	[session setUsername:acc.username];
+	[session setPassword:acc.password];
+	[session setConnectionType:acc.server.connType];
+	
+	MCOIMAPMessagesRequestKind requestKind = MCOIMAPMessagesRequestKindHeaders | MCOIMAPMessagesRequestKindFlags;
+	MCOIndexSet *uids = [MCOIndexSet indexSetWithRange:MCORangeMake(0, kMaxMailsToFetch)];
+	
+	MCOIMAPFetchMessagesOperation *fetchOperation = [session fetchMessagesOperationWithFolder:kFolderInbox
+																				  requestKind:requestKind uids:uids];
+	
+	NSLog(@"start check %@", acc.username);
+	[fetchOperation start:^(NSError *error, NSArray *fetchedMessages, MCOIndexSet *vanishedMessages){
+		NSLog(@"check %@ done, error %@, count %lu, vanished count: %u",
+			  acc.username, error, fetchedMessages.count, vanishedMessages.count);
+		onComplete(acc, error, fetchedMessages);
+	}];
+}
+
+
 - (void)checkNow{
     if(checkingStatus == CheckingStatusChecking){
         return;
@@ -184,70 +241,74 @@
     [self cancelWait4Retry];
 
     [self setCheckingStatus:CheckingStatusChecking];
-
-    MCOIMAPSession *session = [[MCOIMAPSession alloc] init];
-    [session setHostname:@"imap.qiye.163.com"];
-    [session setPort:993];
-    [session setUsername:@"yang.zhang@ck-telecom.com"];
-    [session setPassword:@"Ck654321"];
-    [session setConnectionType:MCOConnectionTypeTLS];
-
-    MCOIMAPMessagesRequestKind requestKind = MCOIMAPMessagesRequestKindHeaders | MCOIMAPMessagesRequestKindFlags;
-    NSString *folder = @"INBOX";
-    MCOIndexSet *uids = [MCOIndexSet indexSetWithRange:MCORangeMake(0, kMaxMailsToFetch)];
-
-    MCOIMAPFetchMessagesOperation *fetchOperation = [session fetchMessagesOperationWithFolder:folder requestKind:requestKind uids:uids];
-
-    [fetchOperation start:^(NSError * error, NSArray * fetchedMessages, MCOIndexSet * vanishedMessages) {
-        if(error) {
-            NSLog(@"Error downloading message headers:%@", error);
-            [self setCheckingStatus:CheckingStatusError];
-            [self wait4retry];
-
-        }else{
-            unreadCount = 0;
-
-			Account *acc = accounts[0]; // TODO: here /////////////////////////////////////////////////////////////////
-			
-			NSMenu *accSubmenu = [self accountSubmenuForAccount:acc];
-			[accSubmenu removeAllItems];
-			
-			NSMutableArray *msgsContainerForThisAccount = [self messagesContainerForAccount:acc];
-			[msgsContainerForThisAccount removeAllObjects];
-
-            for(int i=0; i<fetchedMessages.count; i++){
-                MCOIMAPMessage *msg = fetchedMessages[i];
+	
+	
+	checkTotalCount = (int)accounts.count;
+	checkCompletedCount = 0;
+	
+	unreadCount = 0;
+	
+	
+	for(NSString *UID in accounts){
+		Account *acc2chk = accounts[UID];
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+			[self checkForAccount:acc2chk onComplete:^(Account *checkedAccount, NSError *error, NSArray *msgs) {
+				NSMenu *accSubmenu = [self accountSubmenuForAccount:checkedAccount];
+				[accSubmenu removeAllItems];
 				
-				[msgsContainerForThisAccount addObject:msg];
-
-                NSString *subject = msg.header.subject;
-                if(! subject){
-                    subject = @"<No Subject>";
-                }
-                BOOL isRead = msg.flags & MCOMessageFlagSeen;
-                NSMenuItem *itm = [[NSMenuItem alloc] init];
-                if(isRead){
-                    itm.title = subject;
-                }else{
-                    unreadCount ++;
-                    NSFont *boldf = [[NSFontManager sharedFontManager] fontWithFamily:statusBarMenu.font.familyName
-                                                              traits:NSBoldFontMask
-                                                              weight:0
-                                                                size:statusBarMenu.font.fontDescriptor.pointSize];
-
-                    NSDictionary *attrs = @{NSFontAttributeName: boldf};
-                    itm.attributedTitle = [[NSAttributedString alloc] initWithString:subject attributes:attrs];
-                }
-                [itm setAction:@selector(onSelectMail:)];
+				if(error){
+					NSMenuItem *itm = [[NSMenuItem alloc] init];
+					itm.title = @"Error, unable to get messages";
+					itm.enabled = NO;
+					[accSubmenu addItem:itm];
+					
+				}else{
+					NSMutableArray *msgContainer = [self messagesContainerForAccount:checkedAccount];
+					[msgContainer removeAllObjects];
+					[msgContainer addObjectsFromArray:msgs];
+					
+					for(int i=0; i<msgs.count; i++){
+						MCOIMAPMessage *msg = msgs[i];
+						
+						NSString *subject = msg.header.subject;
+						if(! subject){
+							subject = @"<No Subject>";
+						}
+						BOOL isRead = msg.flags & MCOMessageFlagSeen;
+						NSMenuItem *itm = [[NSMenuItem alloc] init];
+						if(isRead){
+							itm.title = subject;
+						}else{
+							unreadCount ++;
+							NSFont *boldf = [[NSFontManager sharedFontManager] fontWithFamily:statusBarMenu.font.familyName
+																					   traits:NSBoldFontMask
+																					   weight:0
+																						 size:statusBarMenu.font.fontDescriptor.pointSize];
+							NSDictionary *attrs = @{NSFontAttributeName: boldf};
+							itm.attributedTitle = [[NSAttributedString alloc] initWithString:subject attributes:attrs];
+						}
+						[itm setAction:@selector(onSelectMail:)];
+						
+						[accSubmenu insertItem:itm atIndex:0];
+					}
+					
+				}
 				
-				[accSubmenu insertItem:itm atIndex:0];
-            }
+				[self checkAAccountComp];
+			}];
+		});
+	}
+}
 
-            [self setCheckingStatus:CheckingStatusIdle];
-        }
-    }];
-
-    [self startCheckingRepeatedly];
+- (void)checkAAccountComp{
+	@synchronized(self){
+		checkCompletedCount ++;
+	}
+	
+	if(checkCompletedCount >= checkTotalCount){
+		[self setCheckingStatus:CheckingStatusIdle];
+		[self startCheckingRepeatedly];
+	}
 }
 
 #pragma mark -
@@ -263,7 +324,9 @@
     [self setCheckingStatus:CheckingStatusWait4Retry];
 
     [self cancelWait4Retry];
-    wait4retryTimer = [NSTimer timerWithTimeInterval:kWait4RetryDuration target:self selector:@selector(onWait4RetryTimer:) userInfo:nil repeats:NO];
+    wait4retryTimer = [NSTimer timerWithTimeInterval:kWait4RetryDuration
+											  target:self selector:@selector(onWait4RetryTimer:)
+											userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:wait4retryTimer forMode:NSRunLoopCommonModes];
 }
 
@@ -279,7 +342,9 @@
     if(repeatCheckTimer){
         [repeatCheckTimer invalidate];
     }
-    repeatCheckTimer = [NSTimer timerWithTimeInterval:kCheckingInterval target:self selector:@selector(onRepeatCheckTimer:) userInfo:nil repeats:NO];
+    repeatCheckTimer = [NSTimer timerWithTimeInterval:kCheckingInterval
+											   target:self selector:@selector(onRepeatCheckTimer:)
+											 userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:repeatCheckTimer forMode:NSRunLoopCommonModes];
 }
 

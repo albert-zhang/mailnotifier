@@ -12,16 +12,26 @@
 
 + (Server *)serverWithType:(ServerType)tp{
     Server *svr = [[Server alloc] init];
-    svr.type = tp;
     BOOL created = NO;
-    switch (tp) {
-        case ServerTypeNeteasyEnterprise:
-            svr.name = @"imap.qiye.163.com";
+	switch (tp) {
+		case ServerTypeOutlook:
+			svr.hostname = @"imap-mail.outlook.com";
+			svr.port = 993;
+			svr.connType = MCOConnectionTypeTLS;
+			created = YES;
+			break;
+        case ServerType163Enterprise:
+            svr.hostname = @"imap.qiye.163.com";
             svr.port = 993;
             svr.connType = MCOConnectionTypeTLS;
             created = YES;
-            break;
-
+			break;
+		case ServerType126:
+			svr.hostname = @"imap.126.com";
+			svr.port = 993;
+			svr.connType = MCOConnectionTypeTLS;
+			created = YES;
+			break;
         default:
             break;
     }

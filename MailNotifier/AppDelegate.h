@@ -16,7 +16,10 @@
 
 #define kWait4RetryDuration 5.0
 
-#define kCheckingInterval 15.0
+#define kCheckingInterval 7.0
+
+#define kFolderInbox	@"INBOX"
+
 
 typedef enum {
     CheckingStatusChecking,
@@ -34,22 +37,23 @@ typedef enum {
     NSMenuItem *preferencesMenuItem;
     NSMenuItem *aboutMenuItem;
     NSMenuItem *exitMenuItem;
+	
+	/**
+	 All the 3 array below are indexed by Account
+	 */
+	NSMutableDictionary *accounts; // account UID => Account
+    NSMutableDictionary *messages; // account UID => Array of messages (MCOIMAPMessage)
+	NSMutableDictionary *accountSubmenus; // account UID => Array of sub menus of this account
 
-//    NSMutableArray *accountsMenuItems;
-
-//    NSMenu *currentMessagesMenu;
-
-    NSMutableArray *messages; // account index => NSArray of messages (MCOIMAPMessage)
-
-    NSMutableArray *accounts;
-	NSMutableArray *accountSubmenus;
-
-    BOOL unreadCount;
+    int unreadCount;
 
     NSTimer *repeatCheckTimer;
 
     CheckingStatus checkingStatus;
     NSTimer *wait4retryTimer;
+	
+	int checkTotalCount;
+	int checkCompletedCount;
 }
 
 @end

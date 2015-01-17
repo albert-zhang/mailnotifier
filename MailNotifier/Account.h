@@ -16,4 +16,6 @@
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, strong) Server *server;
 
+@property (nonatomic, readonly) NSString *UID;
+
 @end
