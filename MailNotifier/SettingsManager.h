@@ -12,6 +12,8 @@
 
 @property (nonatomic, readonly) NSArray *accounts;
 
+@property (nonatomic, assign) BOOL showFullSubject;
+
 + (SettingsManager *)sharedManager;
 
 @end

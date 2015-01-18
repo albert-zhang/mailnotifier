@@ -7,8 +7,123 @@
 //
 
 #import "AppDelegate.h"
-#import "MailCore.h"
 #import "SettingsManager.h"
+
+
+NSAttributedString * createMenuFont(NSString *string, BOOL bold, NSColor *color){
+	static NSFont *menuft = nil;
+	if(! menuft){
+		menuft = [NSFont menuFontOfSize:10];
+	}
+	NSInteger weight = [[NSFontManager sharedFontManager] weightOfFont:menuft];
+	if(bold){
+		weight *= 2;
+	}
+	NSFontTraitMask traits = 0;
+	if(bold){
+		traits = NSBoldFontMask;
+	}
+	NSFont *ft = [[NSFontManager sharedFontManager] fontWithFamily:menuft.familyName
+															traits:traits
+															weight:weight
+																 size:kMenuFontSize];
+	NSMutableDictionary *attrs = [NSMutableDictionary dictionary];
+	[attrs setObject:ft forKey:NSFontAttributeName];
+	if(color){
+		[attrs setObject:color forKey:NSForegroundColorAttributeName];
+	}
+	return [[NSAttributedString alloc] initWithString:string attributes:attrs];
+}
+
+
+@implementation AccountMenuItem
+- (instancetype)init
+{
+	self = [super init];
+	if (self) {
+		showUnreadCount = NO;
+		unreadCount = 0;
+		myTitle = @"";
+		isWarning = NO;
+	}
+	return self;
+}
+
+- (void)updateFullTitle{
+	NSString *str = [NSString stringWithFormat:@"%@%@%@%@",
+					 (showUnreadCount && unreadCount > 0) ? [NSString stringWithFormat:@"📢 "] : @"",
+					 (showUnreadCount && unreadCount == 0) ? @"✅ ":@"",
+					 isWarning ? @"⛔️ ":@"",
+					 myTitle];
+	NSAttributedString *attStr = createMenuFont(str, NO, (isWarning ? [NSColor redColor] : nil));
+	self.attributedTitle = attStr;
+}
+
+- (void)setTitle:(NSString *)title withWarningStatus:(BOOL)warning{
+	myTitle = [title copy];
+	isWarning = warning;
+	[self updateFullTitle];
+}
+
+- (void)setWarningStatus:(BOOL)warning{
+	isWarning = warning;
+	[self updateFullTitle];
+}
+
+- (void)setUnreadCount:(int)c{
+	unreadCount = c;
+	[self updateFullTitle];
+}
+
+- (void)setShowUnreadCount:(BOOL)b{
+	showUnreadCount = b;
+	[self updateFullTitle];
+}
+@end
+
+
+@implementation MessageMenuItem
+- (void)setMessage:(MCOIMAPMessage *)msg{
+	_message = msg;
+	
+	NSString *subject = msg.header.subject;
+	if(! subject){
+		subject = @"<No Subject>";
+	}
+	
+	subject = [NSString stringWithFormat:@"%@  %@", @"✉️", subject];
+	
+	if(! [SettingsManager sharedManager].showFullSubject){
+		NSString *concatedStr = @"";
+		for(int i=0; i<subject.length; i++){
+			NSAttributedString *concatedAttrStr = createMenuFont(concatedStr, NO, nil);
+			NSRect r = [concatedAttrStr boundingRectWithSize:NSSizeFromCGSize(CGSizeMake(10000, 10000)) options:0];
+			if(r.size.width > kShortenMessageMenuWidth){
+				break;
+			}
+			concatedStr = [NSString stringWithFormat:@"%@%@", concatedStr,
+						   [subject substringWithRange:NSMakeRange(i, 1)]];
+		}
+		subject = [NSString stringWithFormat:@"%@%@", concatedStr,
+				   (concatedStr.length == subject.length) ? @"":@" ...."];
+	}
+	
+	NSAttributedString *str = createMenuFont(subject, NO, nil);
+	
+	self.attributedTitle = str;
+}
+
+- (void)setError:(NSString *)err{
+	self.attributedTitle = nil;
+	self.title = err;
+	self.enabled = NO;
+}
+
+- (void)setInfo:(NSString *)info{
+	[self setError:info];
+}
+@end
+
 
 @implementation AppDelegate
 
@@ -102,7 +217,7 @@
 
     statusBarItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     statusBarItem.menu = statusBarMenu;
-    statusBarItem.title = @"Mail";
+    statusBarItem.title = @"Mail Notifier";
     //    [statusItem setImage:[NSImage imageNamed:@"StatusBarIcon"]];
     statusBarItem.highlightMode = YES;
 
@@ -158,11 +273,12 @@
 
 - (void)createMenuItemsForAccounts{
 	accountSubmenus = [NSMutableDictionary dictionaryWithCapacity:accounts.count];
+	accountMenuItems = [NSMutableDictionary dictionaryWithCapacity:accounts.count];
 	
 	for(NSString *UID in accounts){
 		Account *acc = accounts[UID];
-		NSMenuItem *itm = [[NSMenuItem alloc] init];
-		itm.title = acc.desc;
+		AccountMenuItem *itm = [[AccountMenuItem alloc] init];
+		[itm setTitle:acc.desc withWarningStatus:NO];
 		
 		NSMenu *subm = [[NSMenu alloc] init];
 		[accountSubmenus setObject:subm forKey:acc.UID];
@@ -170,11 +286,21 @@
 		itm.submenu = subm;
 		
 		[statusBarMenu insertItem:itm atIndex:kIndexToInsertAccountMenuItem];
+		
+		[accountMenuItems setObject:itm forKey:acc.UID];
 	}
 }
 
+//- (void)setAccountMenuItemWarningStatus:(BOOL)warning{
+//	AccountMenuItem *itm = accountMenuItems[acc]
+//}
+
 - (NSMenu *)accountSubmenuForAccount:(Account *)acc{
 	return [accountSubmenus objectForKey:acc.UID];
+}
+
+- (AccountMenuItem *)accountMenuItemForAccount:(Account *)acc{
+	return [accountMenuItems objectForKey:acc.UID];
 }
 
 #pragma mark -
@@ -194,9 +320,9 @@
             break;
         case CheckingStatusIdle:
             if(unreadCount > 0){
-                str = [NSString stringWithFormat:@"You have %d unread mails", unreadCount];
+                str = [NSString stringWithFormat:@"You have %d unread messages", unreadCount];
             }else{
-                str = @"Ahh, all mails are read";
+                str = @"Ahh, all messages are read";
             }
             break;
         default:
@@ -228,7 +354,9 @@
 	[fetchOperation start:^(NSError *error, NSArray *fetchedMessages, MCOIndexSet *vanishedMessages){
 		NSLog(@"check %@ done, error %@, count %lu, vanished count: %u",
 			  acc.username, error, fetchedMessages.count, vanishedMessages.count);
-		onComplete(acc, error, fetchedMessages);
+		dispatch_async(dispatch_get_main_queue(), ^{
+			onComplete(acc, error, fetchedMessages);
+		});
 	}];
 }
 
@@ -246,6 +374,8 @@
 	checkTotalCount = (int)accounts.count;
 	checkCompletedCount = 0;
 	
+	checkHasError = NO;
+	
 	unreadCount = 0;
 	
 	
@@ -256,11 +386,18 @@
 				NSMenu *accSubmenu = [self accountSubmenuForAccount:checkedAccount];
 				[accSubmenu removeAllItems];
 				
+				AccountMenuItem *accItm = [self accountMenuItemForAccount:checkedAccount];
+				[accItm setWarningStatus:(error != nil)];
+				[accItm setShowUnreadCount:(error == nil)];
+				
+				int currentUnreadCount = 0;
+				
 				if(error){
-					NSMenuItem *itm = [[NSMenuItem alloc] init];
-					itm.title = @"Error, unable to get messages";
-					itm.enabled = NO;
+					MessageMenuItem *itm = [[MessageMenuItem alloc] init];
+					[itm setError:@"Error, unable to get messages"];
 					[accSubmenu addItem:itm];
+					
+					checkHasError = YES;
 					
 				}else{
 					NSMutableArray *msgContainer = [self messagesContainerForAccount:checkedAccount];
@@ -270,27 +407,28 @@
 					for(int i=0; i<msgs.count; i++){
 						MCOIMAPMessage *msg = msgs[i];
 						
-						NSString *subject = msg.header.subject;
-						if(! subject){
-							subject = @"<No Subject>";
-						}
 						BOOL isRead = msg.flags & MCOMessageFlagSeen;
-						NSMenuItem *itm = [[NSMenuItem alloc] init];
-						if(isRead){
-							itm.title = subject;
-						}else{
-							unreadCount ++;
-							NSFont *boldf = [[NSFontManager sharedFontManager] fontWithFamily:statusBarMenu.font.familyName
-																					   traits:NSBoldFontMask
-																					   weight:0
-																						 size:statusBarMenu.font.fontDescriptor.pointSize];
-							NSDictionary *attrs = @{NSFontAttributeName: boldf};
-							itm.attributedTitle = [[NSAttributedString alloc] initWithString:subject attributes:attrs];
-						}
-						[itm setAction:@selector(onSelectMail:)];
 						
-						[accSubmenu insertItem:itm atIndex:0];
+						if(!isRead){
+							MessageMenuItem *itm = [[MessageMenuItem alloc] init];
+							
+							itm.message = msg;
+							[accSubmenu insertItem:itm atIndex:0];
+							
+							[itm setAction:@selector(onSelectMail:)];
+						
+							unreadCount ++;
+							currentUnreadCount ++;
+						}
 					}
+					
+					if(currentUnreadCount == 0){
+						MessageMenuItem *itm = [[MessageMenuItem alloc] init];
+						[itm setInfo:@"Ahh, all messages are read"];
+						[accSubmenu addItem:itm];
+					}
+					
+					[accItm setUnreadCount:currentUnreadCount];
 					
 				}
 				
@@ -308,6 +446,12 @@
 	if(checkCompletedCount >= checkTotalCount){
 		[self setCheckingStatus:CheckingStatusIdle];
 		[self startCheckingRepeatedly];
+		
+//		if(checkHasError){
+//			[self wait4retry];
+//		}else{
+//			[self startCheckingRepeatedly];
+//		}
 	}
 }
 
@@ -374,7 +518,7 @@
 }
 
 
-- (void)onSelectMail:(id)sender{
+- (void)onSelectMail:(MessageMenuItem *)sender{
 
 }
 

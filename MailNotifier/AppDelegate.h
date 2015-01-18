@@ -8,17 +8,23 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "MailCore.h"
+
 #import "Account.h"
 
 #define kIndexToInsertAccountMenuItem 4
 
 #define kMaxMailsToFetch 1000
 
-#define kWait4RetryDuration 5.0
+#define kWait4RetryDuration 10.0
 
-#define kCheckingInterval 7.0
+#define kCheckingInterval 30.0
 
 #define kFolderInbox	@"INBOX"
+
+#define kMenuFontSize 14
+
+#define kShortenMessageMenuWidth 300.0
 
 
 typedef enum {
@@ -43,6 +49,7 @@ typedef enum {
 	 */
 	NSMutableDictionary *accounts; // account UID => Account
     NSMutableDictionary *messages; // account UID => Array of messages (MCOIMAPMessage)
+	NSMutableDictionary *accountMenuItems; // account UID => the AccountMenuItem
 	NSMutableDictionary *accountSubmenus; // account UID => Array of sub menus of this account
 
     int unreadCount;
@@ -54,7 +61,27 @@ typedef enum {
 	
 	int checkTotalCount;
 	int checkCompletedCount;
+	BOOL checkHasError;
 }
 
 @end
 
+
+@interface AccountMenuItem : NSMenuItem
+{
+	NSString *myTitle;
+	BOOL isWarning;
+	int unreadCount;
+	BOOL showUnreadCount;
+}
+- (void)setTitle:(NSString *)title withWarningStatus:(BOOL)warning;
+- (void)setWarningStatus:(BOOL)warning;
+- (void)setUnreadCount:(int)c;
+- (void)setShowUnreadCount:(BOOL)b;
+@end
+
+@interface MessageMenuItem : NSMenuItem
+@property (nonatomic, strong) MCOIMAPMessage *message;
+- (void)setError:(NSString *)err;
+- (void)setInfo:(NSString *)info;
+@end
