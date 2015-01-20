@@ -7,9 +7,10 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "types.h"
 
 #define kPreferencesWindowClosedNotification    @"kPreferencesWindowClosedNotification"
 
-@interface PreferencesWindowController : NSWindowController
+@interface PreferencesWindowController : NSWindowController <NSComboBoxDataSource, NSComboBoxDelegate>
 
 @end

@@ -16,6 +16,7 @@
 		DE15EEC11A69163D00CD0F3D /* Server.m in Sources */ = {isa = PBXBuildFile; fileRef = DE15EEC01A69163D00CD0F3D /* Server.m */; };
 		DE6FC7371A6E208F00FEAF66 /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6FC7351A6E208F00FEAF66 /* AboutWindowController.m */; };
 		DE6FC7381A6E208F00FEAF66 /* AboutWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE6FC7361A6E208F00FEAF66 /* AboutWindowController.xib */; };
+		DE6FC73C1A6E4CA100FEAF66 /* IAPManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6FC73B1A6E4CA100FEAF66 /* IAPManager.m */; };
 		DEB0259E1A678EEE004742A4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB0259D1A678EEE004742A4 /* AppDelegate.m */; };
 		DEB025A01A678EEE004742A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB0259F1A678EEE004742A4 /* main.m */; };
 		DEB025A21A678EEE004742A4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DEB025A11A678EEE004742A4 /* Images.xcassets */; };
@@ -50,6 +51,9 @@
 		DE6FC7341A6E208F00FEAF66 /* AboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutWindowController.h; sourceTree = "<group>"; };
 		DE6FC7351A6E208F00FEAF66 /* AboutWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutWindowController.m; sourceTree = "<group>"; };
 		DE6FC7361A6E208F00FEAF66 /* AboutWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutWindowController.xib; sourceTree = "<group>"; };
+		DE6FC7391A6E45D100FEAF66 /* types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
+		DE6FC73A1A6E4CA100FEAF66 /* IAPManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAPManager.h; sourceTree = "<group>"; };
+		DE6FC73B1A6E4CA100FEAF66 /* IAPManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAPManager.m; sourceTree = "<group>"; };
 		DEB025971A678EEE004742A4 /* MailNotifier.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MailNotifier.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEB0259B1A678EEE004742A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DEB0259C1A678EEE004742A4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -122,8 +126,11 @@
 				DE15EEBD1A6915C100CD0F3D /* Account.m */,
 				DE15EEBF1A69163D00CD0F3D /* Server.h */,
 				DE15EEC01A69163D00CD0F3D /* Server.m */,
+				DE6FC7391A6E45D100FEAF66 /* types.h */,
 				274F94261A69F51000B3573A /* SettingsManager.h */,
 				274F94271A69F51000B3573A /* SettingsManager.m */,
+				DE6FC73A1A6E4CA100FEAF66 /* IAPManager.h */,
+				DE6FC73B1A6E4CA100FEAF66 /* IAPManager.m */,
 				274F94211A69F46200B3573A /* PreferencesWindowController.h */,
 				274F94221A69F46200B3573A /* PreferencesWindowController.m */,
 				274F94231A69F46200B3573A /* PreferencesWindowController.xib */,
@@ -310,6 +317,7 @@
 				DE15EEBE1A6915C100CD0F3D /* Account.m in Sources */,
 				DEB025A01A678EEE004742A4 /* main.m in Sources */,
 				274F94241A69F46200B3573A /* PreferencesWindowController.m in Sources */,
+				DE6FC73C1A6E4CA100FEAF66 /* IAPManager.m in Sources */,
 				DE15EEC11A69163D00CD0F3D /* Server.m in Sources */,
 				274F94281A69F51000B3573A /* SettingsManager.m in Sources */,
 				DEB0259E1A678EEE004742A4 /* AppDelegate.m in Sources */,

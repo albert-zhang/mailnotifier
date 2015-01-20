@@ -7,15 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-typedef NS_OPTIONS(NSUInteger, CheckingInterval) {
-    CheckingInterval1 = 1 << 0,
-    CheckingInterval2 = 1 << 1,
-    CheckingInterval5 = 1 << 2,
-    CheckingInterval10 = 1 << 3,
-    CheckingInterval30 = 1 << 4,
-    CheckingInterval60 = 1 << 5,
-};
+#import "types.h"
 
 @interface SettingsManager : NSObject
 

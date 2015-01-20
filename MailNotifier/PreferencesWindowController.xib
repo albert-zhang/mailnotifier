@@ -8,7 +8,7 @@
             <connections>
                 <outlet property="accountField" destination="moE-LD-EIY" id="i9R-9g-3v6"/>
                 <outlet property="addAccountBtn" destination="VGC-8E-N7F" id="ISg-kB-GhT"/>
-                <outlet property="checkIntervalCombobox" destination="Wvp-in-ezZ" id="e4U-NB-c7G"/>
+                <outlet property="checkIntervalPopup" destination="0Wd-jV-AVQ" id="F62-ng-Zc4"/>
                 <outlet property="descField" destination="Bbz-xw-00b" id="cte-ag-QMP"/>
                 <outlet property="hostnameField" destination="dNM-kJ-T6c" id="xOY-Vv-K2s"/>
                 <outlet property="portField" destination="2nt-Wz-05m" id="nvW-gs-Q3X"/>
@@ -36,43 +36,48 @@
                         <tabViewItems>
                             <tabViewItem label="General" identifier="1" id="hjb-fr-jTa">
                                 <view key="view" id="sLn-px-4Sr">
+                                    <rect key="frame" x="10" y="33" width="454" height="338"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R5G-sa-quL">
-                                            <rect key="frame" x="15" y="-50" width="151" height="17"/>
+                                            <rect key="frame" x="15" y="288" width="151" height="17"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Check messages every:" id="f4r-zP-JjF">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
-                                        <comboBox verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wvp-in-ezZ">
-                                            <rect key="frame" x="172" y="-54" width="120" height="26"/>
-                                            <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="yGH-fL-rvP">
-                                                <font key="font" metaFont="system"/>
-                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                <objectValues>
-                                                    <string>Item 1</string>
-                                                    <string>Item 2</string>
-                                                    <string>Item 3</string>
-                                                </objectValues>
-                                            </comboBoxCell>
-                                        </comboBox>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qO4-bO-Zkk">
-                                            <rect key="frame" x="15" y="-84" width="187" height="18"/>
+                                            <rect key="frame" x="15" y="254" width="187" height="18"/>
                                             <buttonCell key="cell" type="check" title="Show full message subject" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="JVb-5G-llO">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                         </button>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eGE-tS-U8q">
-                                            <rect key="frame" x="15" y="-114" width="186" height="18"/>
+                                            <rect key="frame" x="15" y="224" width="186" height="18"/>
                                             <buttonCell key="cell" type="check" title="Show in notification center" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="XC8-fm-TQD">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                         </button>
+                                        <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Wd-jV-AVQ">
+                                            <rect key="frame" x="170" y="283" width="120" height="26"/>
+                                            <popUpButtonCell key="cell" type="push" title="interval" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="3ds-sO-GWl" id="eAW-Yw-lBy">
+                                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="menu"/>
+                                                <menu key="menu" id="Jmp-HY-jh2">
+                                                    <items>
+                                                        <menuItem title="interval" state="on" id="3ds-sO-GWl"/>
+                                                        <menuItem title="Item 2" id="PY3-Lr-OaP"/>
+                                                        <menuItem title="Item 3" id="eiW-J5-rkw"/>
+                                                    </items>
+                                                </menu>
+                                            </popUpButtonCell>
+                                            <connections>
+                                                <action selector="onCheckIntervalChange:" target="-2" id="azJ-nj-DGD"/>
+                                            </connections>
+                                        </popUpButton>
                                     </subviews>
                                 </view>
                             </tabViewItem>
