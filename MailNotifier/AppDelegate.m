@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 #import "SettingsManager.h"
+#import "PreferencesWindowController.h"
+#import "AboutWindowController.h"
 
 
 NSAttributedString * createMenuFont(NSString *string, BOOL bold, NSColor *color){
@@ -506,12 +508,36 @@ NSAttributedString * createMenuFont(NSString *string, BOOL bold, NSColor *color)
 
 
 - (void)onPerferences:(id)sender{
-
+    if(prefwindowCtlr){
+        return;
+    }
+    prefwindowCtlr = [[PreferencesWindowController alloc] initWithWindowNibName:@"PreferencesWindowController"];
+    [prefwindowCtlr showWindow:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onPreferencesWindowClosed:)
+                                                 name:kPreferencesWindowClosedNotification object:nil];
 }
+
+- (void)onPreferencesWindowClosed:(NSNotification *)n{
+    prefwindowCtlr = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kPreferencesWindowClosedNotification object:nil];
+}
+
 
 - (void)onAbout:(id)sender{
-
+    if(abtwCtlr){
+        return;
+    }
+    abtwCtlr = [[AboutWindowController alloc] initWithWindowNibName:@"AboutWindowController"];
+    [abtwCtlr showWindow:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAboutWindowClosed:)
+                                                 name:kAboutWindowClosedNotification object:nil];
 }
+
+- (void)onAboutWindowClosed:(NSNotification *)n{
+    abtwCtlr = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kAboutWindowClosedNotification object:nil];
+}
+
 
 - (void)onExit:(id)sender{
     [[NSApplication sharedApplication] terminate:nil];

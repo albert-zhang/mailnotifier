@@ -14,6 +14,8 @@
 		8013ABE40CB75FEA9AD0F4CB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 40B36B8AD3D270CD275553C3 /* libPods.a */; };
 		DE15EEBE1A6915C100CD0F3D /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = DE15EEBD1A6915C100CD0F3D /* Account.m */; };
 		DE15EEC11A69163D00CD0F3D /* Server.m in Sources */ = {isa = PBXBuildFile; fileRef = DE15EEC01A69163D00CD0F3D /* Server.m */; };
+		DE6FC7371A6E208F00FEAF66 /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6FC7351A6E208F00FEAF66 /* AboutWindowController.m */; };
+		DE6FC7381A6E208F00FEAF66 /* AboutWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE6FC7361A6E208F00FEAF66 /* AboutWindowController.xib */; };
 		DEB0259E1A678EEE004742A4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB0259D1A678EEE004742A4 /* AppDelegate.m */; };
 		DEB025A01A678EEE004742A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB0259F1A678EEE004742A4 /* main.m */; };
 		DEB025A21A678EEE004742A4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DEB025A11A678EEE004742A4 /* Images.xcassets */; };
@@ -45,6 +47,9 @@
 		DE15EEBD1A6915C100CD0F3D /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
 		DE15EEBF1A69163D00CD0F3D /* Server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Server.h; sourceTree = "<group>"; };
 		DE15EEC01A69163D00CD0F3D /* Server.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Server.m; sourceTree = "<group>"; };
+		DE6FC7341A6E208F00FEAF66 /* AboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutWindowController.h; sourceTree = "<group>"; };
+		DE6FC7351A6E208F00FEAF66 /* AboutWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutWindowController.m; sourceTree = "<group>"; };
+		DE6FC7361A6E208F00FEAF66 /* AboutWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutWindowController.xib; sourceTree = "<group>"; };
 		DEB025971A678EEE004742A4 /* MailNotifier.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MailNotifier.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEB0259B1A678EEE004742A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DEB0259C1A678EEE004742A4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -122,6 +127,9 @@
 				274F94211A69F46200B3573A /* PreferencesWindowController.h */,
 				274F94221A69F46200B3573A /* PreferencesWindowController.m */,
 				274F94231A69F46200B3573A /* PreferencesWindowController.xib */,
+				DE6FC7341A6E208F00FEAF66 /* AboutWindowController.h */,
+				DE6FC7351A6E208F00FEAF66 /* AboutWindowController.m */,
+				DE6FC7361A6E208F00FEAF66 /* AboutWindowController.xib */,
 				DEB0259A1A678EEE004742A4 /* Supporting Files */,
 			);
 			path = MailNotifier;
@@ -245,6 +253,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				274F94201A69747800B3573A /* Application.xib in Resources */,
+				DE6FC7381A6E208F00FEAF66 /* AboutWindowController.xib in Resources */,
 				DEB025A21A678EEE004742A4 /* Images.xcassets in Resources */,
 				274F94251A69F46200B3573A /* PreferencesWindowController.xib in Resources */,
 			);
@@ -297,6 +306,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE6FC7371A6E208F00FEAF66 /* AboutWindowController.m in Sources */,
 				DE15EEBE1A6915C100CD0F3D /* Account.m in Sources */,
 				DEB025A01A678EEE004742A4 /* main.m in Sources */,
 				274F94241A69F46200B3573A /* PreferencesWindowController.m in Sources */,

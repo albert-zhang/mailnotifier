@@ -19,6 +19,20 @@
 	return glbSettingsManager;
 }
 
+
+- (NSTimeInterval)checkingIntervalValue{
+    NSTimeInterval min = 0;
+    switch (self.checkingInterval) {
+        case CheckingInterval1:
+            return min = 1;
+            break;
+
+        default:
+            break;
+    }
+    return min * 60.0;
+}
+
 - (instancetype)init
 {
 	self = [super init];

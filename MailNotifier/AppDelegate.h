@@ -26,6 +26,8 @@
 
 #define kShortenMessageMenuWidth 300.0
 
+@class PreferencesWindowController;
+@class AboutWindowController;
 
 typedef enum {
     CheckingStatusChecking,
@@ -62,6 +64,9 @@ typedef enum {
 	int checkTotalCount;
 	int checkCompletedCount;
 	BOOL checkHasError;
+
+    PreferencesWindowController *prefwindowCtlr;
+    AboutWindowController *abtwCtlr;
 }
 
 @end

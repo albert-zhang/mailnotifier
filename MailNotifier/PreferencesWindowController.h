@@ -8,6 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+#define kPreferencesWindowClosedNotification    @"kPreferencesWindowClosedNotification"
+
 @interface PreferencesWindowController : NSWindowController
 
 @end
