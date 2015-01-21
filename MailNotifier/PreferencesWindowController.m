@@ -40,6 +40,8 @@
         [SettingsManager sharedManager].checkingInterval = CheckingInterval30;
     }
     [self setCheckInterval:[SettingsManager sharedManager].checkingInterval];
+
+    [self.window setLevel:NSStatusWindowLevel];
 }
 
 
@@ -56,7 +58,14 @@
     int intvals[kCheckingIntervalCount] = CheckingIntervalCArray;
     int index = (int)[self.checkIntervalPopup indexOfSelectedItem];
     CheckingInterval intvalSelected = intvals[index];
+    if(! [IAPManager sharedManager].hasPurchasedPro){
+        if(intvalSelected != CheckingInterval30){
+            intvalSelected = CheckingInterval30;
+            [self setCheckInterval:CheckingInterval30];
+        }
+    }
     NSLog(@"selected: %lu", intvalSelected);
+    [SettingsManager sharedManager].checkingInterval = intvalSelected;
 }
 
 #pragma mark -

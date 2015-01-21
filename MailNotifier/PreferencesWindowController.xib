@@ -22,7 +22,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Mail Notifier Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
+        <window title="Mail Notifier Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="500" height="400"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
@@ -36,11 +36,10 @@
                         <tabViewItems>
                             <tabViewItem label="General" identifier="1" id="hjb-fr-jTa">
                                 <view key="view" id="sLn-px-4Sr">
-                                    <rect key="frame" x="10" y="33" width="454" height="338"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R5G-sa-quL">
-                                            <rect key="frame" x="15" y="288" width="151" height="17"/>
+                                            <rect key="frame" x="15" y="-50" width="151" height="17"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Check messages every:" id="f4r-zP-JjF">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -48,21 +47,21 @@
                                             </textFieldCell>
                                         </textField>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qO4-bO-Zkk">
-                                            <rect key="frame" x="15" y="254" width="187" height="18"/>
+                                            <rect key="frame" x="15" y="-84" width="187" height="18"/>
                                             <buttonCell key="cell" type="check" title="Show full message subject" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="JVb-5G-llO">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                         </button>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eGE-tS-U8q">
-                                            <rect key="frame" x="15" y="224" width="186" height="18"/>
+                                            <rect key="frame" x="15" y="-114" width="186" height="18"/>
                                             <buttonCell key="cell" type="check" title="Show in notification center" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="XC8-fm-TQD">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                         </button>
                                         <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Wd-jV-AVQ">
-                                            <rect key="frame" x="170" y="283" width="120" height="26"/>
+                                            <rect key="frame" x="170" y="-55" width="120" height="26"/>
                                             <popUpButtonCell key="cell" type="push" title="interval" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="3ds-sO-GWl" id="eAW-Yw-lBy">
                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="menu"/>

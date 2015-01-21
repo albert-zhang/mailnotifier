@@ -21,15 +21,7 @@
 
 
 - (NSTimeInterval)checkingIntervalValue{
-    NSTimeInterval min = 0;
-    switch (self.checkingInterval) {
-        case CheckingInterval1:
-            return min = 1;
-            break;
-
-        default:
-            break;
-    }
+    NSTimeInterval min = self.checkingInterval;
     return min * 60.0;
 }
 

@@ -488,7 +488,7 @@ NSAttributedString * createMenuFont(NSString *string, BOOL bold, NSColor *color)
     if(repeatCheckTimer){
         [repeatCheckTimer invalidate];
     }
-    repeatCheckTimer = [NSTimer timerWithTimeInterval:kCheckingInterval
+    repeatCheckTimer = [NSTimer timerWithTimeInterval:[SettingsManager sharedManager].checkingIntervalValue
 											   target:self selector:@selector(onRepeatCheckTimer:)
 											 userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:repeatCheckTimer forMode:NSRunLoopCommonModes];

@@ -18,8 +18,6 @@
 
 #define kWait4RetryDuration 10.0
 
-#define kCheckingInterval 30.0
-
 #define kFolderInbox	@"INBOX"
 
 #define kMenuFontSize 14
