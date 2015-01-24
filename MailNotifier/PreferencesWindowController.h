@@ -11,6 +11,13 @@
 
 #define kPreferencesWindowClosedNotification    @"kPreferencesWindowClosedNotification"
 
-@interface PreferencesWindowController : NSWindowController <NSComboBoxDataSource, NSComboBoxDelegate>
+@class Account;
 
+@interface PreferencesWindowController : NSWindowController
+<NSComboBoxDataSource, NSComboBoxDelegate, NSTableViewDataSource, NSTableViewDelegate>
+
+{
+	NSMutableArray *showingAccounts;
+	Account *tmpCreatingAccount;
+}
 @end

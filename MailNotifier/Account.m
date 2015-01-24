@@ -14,6 +14,10 @@
 {
 	self = [super init];
 	if (self) {
+		_desc = @"New Account";
+		_username = @"";
+		_password = @"";
+		_server = [Server serverWithType:ServerTypeOther];
 	}
 	return self;
 }

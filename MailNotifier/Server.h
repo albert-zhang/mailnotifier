@@ -23,7 +23,9 @@ typedef enum {
 @property (nonatomic, strong) NSString *hostname;
 @property (nonatomic, assign) int port;
 @property (nonatomic, assign) MCOConnectionType connType;
+@property (nonatomic, strong) NSString *templateName;
 
 + (Server *)serverWithType:(ServerType)tp;
++ (NSArray *)serversOfConfiguredTypes;
 
 @end

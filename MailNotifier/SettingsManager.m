@@ -8,6 +8,7 @@
 
 #import "SettingsManager.h"
 #import "Account.h"
+#import "IAPManager.h"
 
 @implementation SettingsManager
 
@@ -25,16 +26,29 @@
     return min * 60.0;
 }
 
+
 - (instancetype)init
 {
 	self = [super init];
 	if (self) {
 		_showFullSubject = NO;
+		[self readSettings];
 	}
 	return self;
 }
 
-- (NSArray *)accounts{
+
+- (void)readSettings{
+	[self test_values];//////////////////////////////////////////////////////////////
+}
+
+
+- (void)test_values{
+	_showFullSubject = NO;
+	[IAPManager sharedManager].hasPurchasedPro = YES;
+	_checkingInterval = CheckingInterval30;
+	
+	
 	NSMutableArray *accs = [NSMutableArray array];
 	Account *a = nil;
 	
@@ -59,7 +73,8 @@
 	a.server = [Server serverWithType:ServerTypeOutlook];
 	[accs addObject:a];
 	
-	return accs;
+	_accounts = accs;
 }
+
 
 @end
