@@ -54,6 +54,11 @@
 	
 	[self.accountTable reloadData];
 
+    if(showingAccounts.count > 0){
+        [self.accountTable selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
+        [self showAccountAtIndex:0];
+    }
+
     [self.window setLevel:NSStatusWindowLevel];
 }
 
@@ -75,6 +80,14 @@
 }
 
 - (IBAction)onSave:(id)sender {
+    Account *acc = [self showingAccount];
+    if(acc){
+        acc.desc = self.descField.stringValue;
+        acc.username = self.accountField.stringValue;
+        acc.password = self.passwordField.stringValue;
+        // TODO: here
+        NSLog(@"saved %@", acc.desc);
+    }
 }
 
 - (IBAction)onCheckIntervalChange:(id)sender {
@@ -156,7 +169,11 @@
 
 #pragma mark -
 
-- (void)showAccountAtIndex:(NSUInteger)rowIndex{
+- (void)showAccountAtIndex:(NSInteger)rowIndex{
+    if(rowIndex < 0 || rowIndex >= showingAccounts.count){
+        return;
+    }
+
 	Account *acc = showingAccounts[rowIndex];
 	
 	[self.descField setStringValue:acc.desc];
@@ -169,6 +186,15 @@
 	}else{
 		[self.useSSLCheckbox setState:0];
 	}
+}
+
+- (Account *)showingAccount{
+    Account *acc = nil;
+    NSInteger rowIndex = self.accountTable.selectedRow;
+    if(rowIndex >= 0 && rowIndex < showingAccounts.count){
+        acc = showingAccounts[rowIndex];
+    }
+    return acc;
 }
 
 #pragma mark -
