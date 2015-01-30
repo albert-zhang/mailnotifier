@@ -18,35 +18,35 @@
 			svr.hostname = @"imap.gmail.com";
 			svr.port = 993;
 			svr.connType = MCOConnectionTypeTLS;
-			svr.templateName = @"Gmail";
+			svr->_templateName = @"Gmail";
 			created = YES;
 			break;
 		case ServerTypeOutlook:
 			svr.hostname = @"imap-mail.outlook.com";
 			svr.port = 993;
 			svr.connType = MCOConnectionTypeTLS;
-			svr.templateName = @"Outlook";
+			svr->_templateName = @"Outlook";
 			created = YES;
 			break;
         case ServerType163Enterprise:
             svr.hostname = @"imap.qiye.163.com";
             svr.port = 993;
 			svr.connType = MCOConnectionTypeTLS;
-			svr.templateName = @"163 Enterprise";
+			svr->_templateName = @"163 Enterprise";
             created = YES;
 			break;
 		case ServerType126:
 			svr.hostname = @"imap.126.com";
 			svr.port = 993;
 			svr.connType = MCOConnectionTypeTLS;
-			svr.templateName = @"126";
+			svr->_templateName = @"126";
 			created = YES;
 			break;
         default:
 			svr.hostname = @"imap.example.com";
 			svr.port = 993;
 			svr.connType = MCOConnectionTypeTLS;
-			svr.templateName = nil;
+			svr->_templateName = nil;
 			created = YES;
             break;
     }

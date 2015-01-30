@@ -85,7 +85,13 @@
         acc.desc = self.descField.stringValue;
         acc.username = self.accountField.stringValue;
         acc.password = self.passwordField.stringValue;
-        // TODO: here
+        acc.server.hostname = self.hostnameField.stringValue;
+        acc.server.port = [self.portField.stringValue intValue];
+        if(self.useSSLCheckbox.state == NSOnState){
+            acc.server.connType = MCOConnectionTypeTLS;
+        }else{
+            acc.server.connType = MCOConnectionTypeClear;
+        }
         NSLog(@"saved %@", acc.desc);
     }
 }
